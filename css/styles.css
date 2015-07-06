@@ -9,18 +9,48 @@ html {
   box-sizing: inherit;
   }
 
-*{
-	outline:  brown dotted thin;
+
+
+body
+{
+	background-color: #303030;
+	font-family: Lato;
 }
+
+h1{
+	font-size: 2.75rem;
+}
+
+h1,h2{
+	color:#113D44;
+}
+
+.saved-list li,
+.list-container li{
+	padding:.75rem 0;
+	font-size: 1.5rem;
+}
+
+.saved-list li:nth-child(odd),
+.list-container li:nth-child(odd){
+	background-color: #17545E;
+	color:#2A2C2B;
+}
+
+.saved-list li:nth-child(even),
+.list-container li:nth-child(even){
+	background-color: #2A2C2B;
+	color:#17545E;
+}
+
 
 .main-heading,
 .unchecked-items-header,
 .checked-items-header,
-.save-list-header{
+.save-list-header,
+.items-content{
 	text-align: center;
 }
-
-
 
 .saved-list-section{
 	width:25%;
@@ -29,19 +59,8 @@ html {
 	/*position:absolute;*/
 	top:0;
 	left:0;
-	padding-left: 1rem;
-}
-
-.saved-list-header{
-
-}
-
-.saved-list-content{
-
-}
-
-.saved-list{
-
+	text-align: center;
+	background-color: #292929;
 }
 
 .main-heading,
@@ -54,20 +73,13 @@ html {
 	margin:0 auto;
 }
 
-.unchecked-items-section{
-
-}
-
-.items-content
-{
-	text-align: center;	
-}
-
+.saved-list,
 .items-content ul
 {
 	padding:0;
 }
 
+.saved-list,
 .unchecked-items-list,
 .checked-items-list{
 	list-style-type: none;
@@ -86,6 +98,11 @@ html {
 	width:1px;
 	height:1px;
 	overflow:hidden;
+}
+
+#title-textbox{
+	padding:.5rem;
+	width:75%;
 }
 
 /*.save-list-section{
