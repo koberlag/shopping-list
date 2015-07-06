@@ -1,0 +1,94 @@
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+  }
+
+*{
+	outline:  brown dotted thin;
+}
+
+.main-heading,
+.unchecked-items-header,
+.checked-items-header,
+.save-list-header{
+	text-align: center;
+}
+
+
+
+.saved-list-section{
+	width:25%;
+	height:100%;
+	position: fixed;
+	/*position:absolute;*/
+	top:0;
+	left:0;
+	padding-left: 1rem;
+}
+
+.saved-list-header{
+
+}
+
+.saved-list-content{
+
+}
+
+.saved-list{
+
+}
+
+.main-heading,
+.active-list-container{
+	margin-left:25%;
+}
+
+.list-container{
+	width:50%;
+	margin:0 auto;
+}
+
+.unchecked-items-section{
+
+}
+
+.items-content
+{
+	text-align: center;	
+}
+
+.items-content ul
+{
+	padding:0;
+}
+
+.unchecked-items-list,
+.checked-items-list{
+	list-style-type: none;
+}
+
+.save-container{
+	width:50%;
+	margin:0 auto;
+}
+
+.hidden-accessible
+{
+	position:absolute;
+	left:-10000px;
+	top:auto;
+	width:1px;
+	height:1px;
+	overflow:hidden;
+}
+
+/*.save-list-section{
+	width:25%;
+	margin:0 auto;
+}*/

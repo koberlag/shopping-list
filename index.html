@@ -7,9 +7,13 @@
 	<link rel="stylesheet" href="js/list.js">
 </head>
 <body>
-	<h1 class="main-heading">Shopping List</h1>
+	<header class="main-heading">
+		<h1>Shopping List</h1>
+	</header>
 	<section class="saved-list-section">
-		<h2 class="saved-list-header">Saved Lists</h2>
+		<header class="saved-list-header">
+			<h2>Saved Lists</h2>
+		</header>
 		<div class="saved-list-content">
 			<ol class="saved-list">
 				<li>July 4th BBQ</li>
@@ -17,32 +21,47 @@
 			</ol>
 		</div>
 	</section>
-	<section class="unchecked-items-section">
-		<h2 class="unchecked-items-header">Remaining Items</h2>
-		<button class="save-button">Save</button>
-		<div class="items-content">
-			<ul class="unchecked-items-list">
-				<li>Chicken</li>
-				<li>Potatoes</li>
-				<li>Squash</li>
-			</ul>
+	<div class="active-list-container">
+		<div class="list-container">
+			
+			<div class="save-container">
+				<label for="title-textbox" class="hidden-accessible">List Title</label>
+				<input id="title-textbox" type="text" placeholder="Title">
+				<button class="save-button">Save</button>
+			</div>
+			<section class="unchecked-items-section">
+				<header class="unchecked-items-header">
+					<h2>Remaining Items</h2>
+				</header>
+				<div class="items-content">
+					<ul class="unchecked-items-list">
+						<li>Chicken</li>
+						<li>Potatoes</li>
+						<li>Squash</li>
+					</ul>
+				</div>
+			</section>
+			<section class="checked-items-section">
+				<header class="checked-items-header">
+					<h2>Marked-off</h2>
+				</header>
+				<div class="items-content">
+					<ul class="checked-items-list">
+						<li>Onions</li>
+						<li>Beer</li>
+					</ul>
+				</div>
+			</section>
 		</div>
-	</section>
-	</hr>
-	<section class="checked-items-section">
-		<h2 class="checked-items-header">Marked-off</h2>
-		<div class="items-content">
-			<ul class="checked-items-list">
-				<li>Onions</li>
-				<li>Beer</li>
-			</ul>
-		</div>
-	</section>
-	<section class="save-title">
-		<h2 class="save-list-section">Save List</h2>
+	</div>
+
+	<!--<section class="save-list-section">
+		<header class="save-list-header">
+			<h2>Save List</h2>
+		</header>
 		<label for="title-textbox" class="hidden-label">List Title</label>
 		<input id="title-textbox" type="text" placeholder="Title">
 		<button class="save-button">Save</button>
-	</section>
+	</section>-->
 </body>
 </html>
