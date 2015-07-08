@@ -22,13 +22,19 @@ h1{
 }
 
 h1,h2{
-	color:#113D44;
+	color:#2A98AA;
 }
 
 .saved-list li,
 .list-container li{
 	padding:.75rem 0;
 	font-size: 1.5rem;
+}
+
+.saved-list li:nth-child(n):hover,
+.list-container li:nth-child(n):hover{
+	color:#303030;
+	background-color:#2A98AA;
 }
 
 .saved-list li:nth-child(odd),
@@ -103,6 +109,41 @@ h1,h2{
 #title-textbox{
 	padding:.5rem;
 	width:75%;
+}
+
+.list-container hr{
+	background-color: #292929;
+  border: none;
+  border-radius: 3px;
+  height: 6px;
+  margin: 40px auto 30px auto;
+  width: 75%;
+
+}
+
+.fa-times{
+	float:right;
+	padding-right: 1em;
+}
+
+.fa-check{
+	float:left;
+	padding-left:1em;
+}
+
+.fa-times:hover
+{
+	color:#AF2815;
+}
+
+.fa-check:hover
+{
+	color:#00B71A;
+
+}
+
+.checked{
+	color:#00B71A;
 }
 
 /*.save-list-section{

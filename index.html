@@ -4,9 +4,10 @@
 	<meta charset="UTF-8">
 	<title>Shopping List</title>
 	<link href='http://fonts.googleapis.com/css?family=Lato:400,900' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/styles.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script type="text/javascript" src="js/list.js"></script>
-
 <body>
 	<header class="main-heading">
 		<h1>Shopping List</h1>
@@ -30,6 +31,7 @@
 				<input id="title-textbox" type="text" placeholder="Title">
 				<button class="save-button">Save</button>
 			</div>
+			<hr>
 			<section class="unchecked-items-section">
 				<header class="unchecked-items-header">
 					<h2>Remaining Items</h2>
@@ -38,10 +40,11 @@
 					<ul class="unchecked-items-list">
 						<li>Chicken</li>
 						<li>Potatoes</li>
-						<li>Squash</li>
+						<li><i class="fa fa-check fa-lg"></i>Squash<i class="fa fa-times fa-lg"></i></li>
 					</ul>
 				</div>
 			</section>
+			<hr>
 			<section class="checked-items-section">
 				<header class="checked-items-header">
 					<h2>Marked-off</h2>
