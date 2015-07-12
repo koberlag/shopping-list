@@ -3,34 +3,25 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Shopping List</title>
-	<link href='http://fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'>
+	<link href='//fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/styles.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/list.js"></script>
 <body>
-	<header class="main-heading">
+	
+	
+	<div class="outer-list-container">
+		<header class="main-heading">
 		<h1>Shopping List</h1>
 	</header>
-	<section class="saved-list-section">
-		<header class="saved-list-header">
-			<h2>Saved Lists</h2>
-		</header>
-		<div class="saved-list-content">
-			<ol class="saved-list">
-				<li>July 4th BBQ</li>
-				<li>My Groceries</li>
-			</ol>
-		</div>
-	<a class="side-bar-handle"><i class="fa fa-angle-left"></i></a>
-	</section>
-	<div class="outer-list-container">
 		<div class="inner-list-container">
-			
 			<div class="save-container">
+				<button id="save-button" class="button">Save</button>
 				<label for="title-textbox" class="hidden-accessible">List Title</label>
 				<input id="title-textbox" type="text" placeholder="List Name">
-				<button class="save-button">Save</button>
 			</div>
 			<hr>
 			<section class="items-section">
@@ -38,16 +29,25 @@
 					<h2>My Items</h2>
 				</header>
 				<div class="items-content">
-					<input class="item-input" type="text" placeholder="+ Add Items Here">
-					<ul class="items-list">
-						
-						<li>Chicken</li>
-						<li>Potatoes</li>
-						<li><i class="fa fa-check fa-lg"></i>Squash<i class="fa fa-times fa-lg"></i></li>
+					<label for="item-input" class="hidden-accessible">Add Items Here</label>
+					<input id="item-input" type="text" placeholder="+ Add Items Here">
+					<ul class="active-list">
 					</ul>
 				</div>
 			</section>
 		</div>
 	</div>
+	<section class="saved-list-section">
+		<header class="saved-list-header">
+			<h2>Saved Lists</h2>
+			<button id="add-list-button" class="button">+ Add New List</button>
+			<!-- <input id="new-list-input" type="text" placeholder="+ Add New List"> -->
+		</header>
+		<div class="saved-list-content">
+			<ul class="saved-list">
+			</ul>
+		</div>
+	<a class="side-bar-handle"><i class="fa fa-angle-left"></i></a>
+	</section>
 </body>
 </html>
