@@ -112,27 +112,21 @@ function saveList(){
 		}
 		else
 		{
-			$(".saved-list").find(".active-list").find("ul").replaceWith(newSavedList);
+			$(".saved-list").find(".active-list").find(".saved-list-content").replaceWith(newSavedList);
 		}
 
-		$(".saved-list").find(".active-list").find("ul").hide();
+		$(".saved-list").find(".active-list").find(".saved-list-content").hide();
 	}
 }
 
 function selectList(){
-	var savedListContent = $(this).find(".saved-list-content").find("li"),
+	var savedListContent = $(this).find(".saved-list-content"),
 		listTitle = $(this).find(".title-span").text(),
 		itemsList = $(".items-content").find(".active-list");
-	
-	if(itemsList.find("li").length === 0)
-	{
-		itemsList.append(savedListContent.clone());
-	}
-	else
-	{
-		itemsList.empty().append(savedListContent.clone());
-	}
-	
+
+	$(".saved-list").children().removeClass("active-list");
+	savedListContent.parent().addClass("active-list");
+	itemsList.empty().append(savedListContent.find("li").clone());
 	$("#title-textbox").val(listTitle);
 	itemsList.find("li").click(toggleCheckedItem);
 	itemsList.find("li .fa-times").first().click(removeItem);
