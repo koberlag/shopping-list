@@ -43,7 +43,7 @@ function addItemToContentList(){
 	if (event.which == 13 && $("#item-textbox").val() !== ""){
 		var itemsList 	= $(".items-content").find(".active-list");
 
-		itemsList.prepend(CreateContentItem()); //Add New Item To Top Of List
+		itemsList.prepend(createContentItem()); //Add New Item To Top Of List
 		itemsList.find("li").first().hide().show("slow");
 		$("#item-textbox").val("");//Clear Input Field
 	}	
@@ -51,7 +51,7 @@ function addItemToContentList(){
 
 function addItemToSavedList(){
 	var savedList 	= $(".saved-list"),
-		newListItem = $(CreateSavedListItem()).addClass("active-list");
+		newListItem = $(createSavedListItem()).addClass("active-list");
 
 		savedList.children().removeClass("active-list");
 		savedList.append(newListItem);
@@ -104,7 +104,7 @@ function saveList(){
 		
 		//Create ul in saved list item for holding content list items
 		var listItems = $(".items-content").find(".active-list li"),
-			newSavedList = $("<ul class='saved-list-content'>").append(listItems.clone(true));
+			newSavedList = $("<ul class='saved-list-content'>").append(listItems.clone());
 
 		if($(".saved-list").find(".active-list").find(".saved-list-content").length ===0)
 		{
@@ -138,108 +138,27 @@ function selectList(){
 	itemsList.find("li .fa-times").first().click(removeItem);
 }
 
-function CreateContentItem(){
-	var newListItem = $("<li>" + CreateCheckIcon() + $("#item-textbox").val() + CreateDeleteIcon() +"</li>");
+function createContentItem(){
+	var newListItem = $("<li>" + createCheckIcon() + $("#item-textbox").val() + createDeleteIcon() +"</li>");
 		newListItem.find(".fa-times").click(removeItem);
 		newListItem.click(toggleCheckedItem);
 		return newListItem;
 }
 
-function CreateSavedListItem(){
-	var newListItem = $("<li>" + CreateTitleSpan() + CreateDeleteIcon() +"</li>");
+function createSavedListItem(){
+	var newListItem = $("<li>" + createTitleSpan() + createDeleteIcon() +"</li>");
 		newListItem.find(".fa-times").click(removeItem);
 		return newListItem;
 }
 
-function CreateTitleSpan(){
+function createTitleSpan(){
 	return "<span class='title-span'>" + $("#title-textbox").val() + "</span>";
 }
 
-function CreateDeleteIcon(){
+function createDeleteIcon(){
 	return "<i class='fa fa-times fa-lg'></i>";
 }
 
-function CreateCheckIcon(){
+function createCheckIcon(){
 	return "<i class='fa fa-check fa-lg'></i>";
 }
-
-
-// function addItem(event){
-// 	var itemInput 	= $(this),
-// 		inputValue 	= itemInput.val();
-// 	//If enter pressed
-// 	if (event.which == 13 && inputValue !== ""){
-		
-// 			var itemsList 	= $(".active-list"),
-// 				checkIcon 	= "<i class='fa fa-check fa-lg'></i>",
-// 				deleteIcon 	= "<i class='fa fa-times fa-lg'></i>",
-// 				newListItem = "<li>" + checkIcon + inputValue + deleteIcon +"</li>";
-
-// 			itemsList.prepend(newListItem);//Add New Item To Top Of List
-// 			itemInput.val("");//Clear Input Field
-// 			itemsList.find("li").first()
-// 								.hide()
-// 								.show("slow")
-// 								.click(toggleCheckedItem);
-// 			itemsList.find("li .fa-times").first().click(removeItem);
-			
-// 	}
-// }
-
-
-// function addList(event){
-// 	var itemInput 	= $(this),
-// 		inputValue 	= itemInput.val();
-// 	//If enter pressed
-// 	if (event.which == 13 && inputValue !== ""){
-		
-// 			var savedList 		= $(".saved-list"),
-// 				deleteIcon 		= "<i class='fa fa-times fa-lg'></i>",
-// 				newItemsList 	= $("<ul>").addClass("active-list"),
-// 				titleTextBox 	= $("#title-textbox"),
-// 				newListItem 	= $("<li>").text(inputValue).append(newItemsList);
-
-// 			//savedList.find("li").find("ul").removeClass("active-list");//remove existing active list
-// 			//$(".saved-list").find(".items-list").hide();
-
-// 			titleTextBox.val(inputValue);
-// 			savedList.prepend(newListItem);//Add New Item To Top Of List
-// 			itemInput.val("");//Clear Input Field
-// 			savedList.find("li").first()
-// 								.hide()
-// 								.show("slow");
-
-// 			//$(".items-content .active-list").replaceWith(newItemsList);
-// 			$(".items-content .active-list").html(newItemsList.children());
-// 			savedList.find("li .fa-times").first().click(removeItem);
-			
-// 	}
-// }
-
-// function selectActiveList(){
-// 	$(this).parent().find("li ul").removeClass("active-list");
-// }
-
-
-
-// function saveList(){
-// 	var titleTextBox = $("#title-textbox");
-// 	if(titleTextBox.val() !== "")
-// 	{
-// 		var listNameItem = "<li>" + titleTextBox.val() +  "<i class='fa fa-times fa-lg'></i></li>",
-// 			savedItemsList = $(".saved-list .active-list"),
-// 			itemsList = $(".items-content").find(".active-list");
-
-// 		savedItemsList.html(itemsList.children());
-// 		titleTextBox.css({border:"none"})
-// 	}
-// 	else
-// 	{
-// 		titleTextBox.css({border:"4px solid brown"})
-// 		titleTextBox.effect( "shake" );
-// 	}
-// }
-
-// function updateName(){	
-// 	$(".saved-list").find(".active-saved-item").text($(this).val());
-// }
