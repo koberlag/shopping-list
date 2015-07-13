@@ -2,14 +2,13 @@ $(document).ready(function(){
 	$("items-content").find(".active-list li").click(toggleCheckedItem);
 	$(".side-bar-handle").click(toggleSideBar);
 	$(".side-bar-handle").click(toggleSideBarHandleIcon);
-	//$("#new-list-input").keydown(addList);
-	$("#item-input").keydown(addItem);
+	$("#item-textbox").keydown(addItemToContentList);
 	$("#title-textbox").keydown(saveList);
     $(".fa-times").click(removeItem);
     $("#add-list-button").click(addNewList);
 	$("#save-button").click(saveList);
-	// $("#title-textbox").blur(updateName);
-	// $(".saved-list").find("li").click(selectActiveList);
+	$(".saved-list").sortable();
+	$(".items-content").find(".active-list").sortable();
 });
 
 function toggleCheckedItem(){
@@ -39,44 +38,25 @@ function toggleSideBarHandleIcon(){
 		sideBarHandleIcon.toggleClass("fa-angle-right");
 }
 
-function addList(){
-	var itemInput 	= $("#title-textbox"),
-		inputValue 	= itemInput.val();
+function addItemToContentList(){
 	//If enter pressed
-	//if (event.which == 13 && inputValue !== ""){
-		var savedList = $(".saved-list"),
-			deleteIcon = "<i class='fa fa-times fa-lg'></i>",
-			newListItem = $("<li><span>" + inputValue + "</span>" + deleteIcon + "</li>")
-							.addClass("active-list");
+	if (event.which == 13 && $("#item-textbox").val() !== ""){
+		var itemsList 	= $(".items-content").find(".active-list");
+
+		itemsList.prepend(CreateContentItem()); //Add New Item To Top Of List
+		itemsList.find("li").first().hide().show("slow");
+		$("#item-textbox").val("");//Clear Input Field
+	}	
+}
+
+function addItemToSavedList(){
+	var savedList 	= $(".saved-list"),
+		newListItem = $(CreateSavedListItem()).addClass("active-list");
 
 		savedList.children().removeClass("active-list");
 		savedList.append(newListItem);
 		newListItem.hide().show("slow");
-		newListItem.find(".fa-times").first().click(removeItem);
-		$(".saved-list").find("li").click(selectList);
-	//}
-}
-
-function addItem(){
-	var itemInput 	= $(this),
-		inputValue 	= itemInput.val();
-	//If enter pressed
-	if (event.which == 13 && inputValue !== ""){
-
-			var itemsList 	= $(".items-content .active-list"),
-				checkIcon 	= "<i class='fa fa-check fa-lg'></i>",
-				deleteIcon 	= "<i class='fa fa-times fa-lg'></i>",
-				newListItem = "<li>" + checkIcon + inputValue + deleteIcon +"</li>";
-
-			itemsList.prepend(newListItem); //Add New Item To Top Of List
-			itemInput.val("");//Clear Input Field
-			itemsList.find("li").first()
-								.hide()
-								.show("slow")
-								.click(toggleCheckedItem);
-							
-			itemsList.find("li .fa-times").first().click(removeItem);
-	}	
+		savedList.find("li").click(selectList);
 }
 
 function removeItem(){
@@ -92,69 +72,97 @@ function removeItem(){
 }
 
 function addNewList(){
-	$("#title-textbox").val("");
+	var titleTextBox = $("#title-textbox");
+	titleTextBox.val("");
+	titleTextBox.focus();
 	$(".items-content").find(".active-list").empty();
 	$(".saved-list").find("li").removeClass("active-list");
 }
 
 function saveList(){
-	var savedList = $(".saved-list").find(".active-list"),
-	    titleTextBox = $("#title-textbox"),
-	    titleSpan = "<span>" + $("#title-textbox").val() + "</span>",
-	    deleteIcon = "<i class='fa fa-times fa-lg'></i>";
+	//If enter or left mouse pressed
+	if (event.which === 13 || event.which === 1){
+		var savedList 	= $(".saved-list").find(".active-list"),
+	    	titleTextBox = $("#title-textbox");
 
-	if (event.which == 13 && $(this).data('clicked', true)){
-		if(titleTextBox.val() !== "")
+		if(titleTextBox.val() === "")
 		{
-			if(savedList.length === 0)
-			{
-				addList();
-			}
-			else
-			{
-				savedList.html(titleSpan + deleteIcon);
-				savedList.find(".fa-times").first().click(removeItem);
-			}
-			//Why is savedList and x not the same?
-			var x = $(".saved-list").find(".active-list");
-			var listItems = $(".items-content").find(".active-list li"),
-				newSavedList = $("<ul>").append(listItems.clone());
-			if($(".saved-list").find(".active-list").find("ul").length ===0)
-			{
-				$(".saved-list").find(".active-list").append(newSavedList);
-			}
-			else
-			{
-				$(".saved-list").find(".active-list").find("ul").replaceWith($(".items-content").find(".active-list"));
-			}
+			titleTextBox.effect("shake");
+			return;
+		}
 
-			$(".saved-list").find(".active-list").find("ul").hide();
+		if(savedList.length === 0)
+		{
+			//add new list
+			addItemToSavedList();
 		}
 		else
 		{
-			titleTextBox.effect("shake");
+			//Update list name
+			savedList.find(".title-span").html(titleTextBox.val());
 		}
+		
+		//Create ul in saved list item for holding content list items
+		var listItems = $(".items-content").find(".active-list li"),
+			newSavedList = $("<ul class='saved-list-content'>").append(listItems.clone(true));
+
+		if($(".saved-list").find(".active-list").find(".saved-list-content").length ===0)
+		{
+			$(".saved-list").find(".active-list").append(newSavedList);
+		}
+		else
+		{
+			$(".saved-list").find(".active-list").find("ul").replaceWith(newSavedList);
+		}
+
+		$(".saved-list").find(".active-list").find("ul").hide();
 	}
 }
 
 function selectList(){
-	var savedList = $(this).find("ul").find("li"),
-		listTitle = $(this).find("span").text(),
+	var savedListContent = $(this).find(".saved-list-content").find("li"),
+		listTitle = $(this).find(".title-span").text(),
 		itemsList = $(".items-content").find(".active-list");
 	
-	$("#title-textbox").val(listTitle);
-	if($(".items-content").find(".active-list li").length === 0)
+	if(itemsList.find("li").length === 0)
 	{
-		itemsList.append(savedList.clone());
+		itemsList.append(savedListContent.clone());
 	}
 	else
 	{
-		itemsList.empty().append(savedList.clone());
+		itemsList.empty().append(savedListContent.clone());
 	}
 	
+	$("#title-textbox").val(listTitle);
 	itemsList.find("li").click(toggleCheckedItem);
 	itemsList.find("li .fa-times").first().click(removeItem);
 }
+
+function CreateContentItem(){
+	var newListItem = $("<li>" + CreateCheckIcon() + $("#item-textbox").val() + CreateDeleteIcon() +"</li>");
+		newListItem.find(".fa-times").click(removeItem);
+		newListItem.click(toggleCheckedItem);
+		return newListItem;
+}
+
+function CreateSavedListItem(){
+	var newListItem = $("<li>" + CreateTitleSpan() + CreateDeleteIcon() +"</li>");
+		newListItem.find(".fa-times").click(removeItem);
+		return newListItem;
+}
+
+function CreateTitleSpan(){
+	return "<span class='title-span'>" + $("#title-textbox").val() + "</span>";
+}
+
+function CreateDeleteIcon(){
+	return "<i class='fa fa-times fa-lg'></i>";
+}
+
+function CreateCheckIcon(){
+	return "<i class='fa fa-check fa-lg'></i>";
+}
+
 
 // function addItem(event){
 // 	var itemInput 	= $(this),
