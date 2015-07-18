@@ -2,14 +2,47 @@ $(document).ready(function(){
 	$("items-content").find(".active-list li").click(toggleCheckedItem);
 	$(".side-bar-handle").click(toggleSideBar);
 	$(".side-bar-handle").click(toggleSideBarHandleIcon);
-	$("#item-textbox").keydown(addItemToContentList);
-	$("#title-textbox").keydown(saveList);
+	$("#item-textbox").keypress(addItemToContentList);
     $(".fa-times").click(removeItem);
     $("#add-list-button").click(addNewList);
 	$("#save-button").click(saveList);
+	$("#title-textbox").focus(setOldValue).change(saveList);//keypress(setOldValue).keyup(saveList);
 	$(".saved-list").sortable();
 	$(".items-content").find(".active-list").sortable();
+	initialize();
 });
+
+function initialize(){
+	if(localStorage.length > 0){
+		loadItemsForSavedLists();
+	}
+}
+
+function loadItemsForSavedLists(){
+	var savedList = $(".saved-list");
+	for (var i = 0; i <= localStorage.length -1; i++) {
+		var savedListItem = $("<li>"),
+			listName = localStorage.key(i);
+
+		savedListItem.append(listName);
+		savedList.append(savedListItem);
+		if(i === 0){
+			loadItemsForContentList(JSON.parse(localStorage.getItem(listName)));
+			savedList.find("li").eq(i).addClass("active-list");
+			$("#title-textbox").val(listName);
+		}
+	};
+}
+
+function loadItemsForContentList(listItems){
+	var activeList = $(".items-content").find(".active-list");
+	for (var i = 0; i <= listItems.length - 1; i++) {
+		var listItem = $("<li>"),
+			itemName = listItems[i];
+		listItem.append(itemName);
+		activeList.append(listItem);
+	};
+}
 
 function toggleCheckedItem(){
 	if(!$(event.target).hasClass('fa-times')){
@@ -60,6 +93,7 @@ function addItemToSavedList(){
 }
 
 function removeItem(){
+	event.stopPropagation();//Prevent events from bubbling up on li.
 	var icon = $(this),
 		item = icon.parent();
 
@@ -79,45 +113,62 @@ function addNewList(){
 	$(".saved-list").find("li").removeClass("active-list");
 }
 
+function setOldValue(){
+	$(this).data("oldValue", $(this).val())
+}
+
 function saveList(){
-	//If enter or left mouse pressed
-	if (event.which === 13 || event.which === 1){
-		var savedList 	= $(".saved-list").find(".active-list"),
-	    	titleTextBox = $("#title-textbox");
+	var newValue = $(this).val(),
+		oldValue = $(this).data('oldValue'),
+		//listItem = localStorage.getItem(oldValue),
+		keys = Object.keys(localStorage),
+		oldIndex = keys.indexOf(oldValue);
 
-		if(titleTextBox.val() === "")
-		{
-			titleTextBox.effect("shake");
-			return;
-		}
-
-		if(savedList.length === 0)
-		{
-			//add new list
-			addItemToSavedList();
-		}
-		else
-		{
-			//Update list name
-			savedList.find(".title-span").html(titleTextBox.val());
-		}
-		
-		//Create ul in saved list item for holding content list items
-		var listItems = $(".items-content").find(".active-list li"),
-			newSavedList = $("<ul class='saved-list-content'>").append(listItems.clone());
-
-		if($(".saved-list").find(".active-list").find(".saved-list-content").length ===0)
-		{
-			$(".saved-list").find(".active-list").append(newSavedList);
-		}
-		else
-		{
-			$(".saved-list").find(".active-list").find(".saved-list-content").replaceWith(newSavedList);
-		}
-
-		$(".saved-list").find(".active-list").find(".saved-list-content").hide();
+	if(oldIndex !== -1){
+		localStorage.setItem(newValue, localStorage.getItem(oldValue));
+		localStorage.removeItem(oldValue);
 	}
 }
+
+// function saveList(){
+// 	//If enter or left mouse pressed
+// 	if (event.which === 13 || event.which === 1){
+// 		var savedList 	= $(".saved-list").find(".active-list"),
+// 	    	titleTextBox = $("#title-textbox");
+
+// 		if(titleTextBox.val() === "")
+// 		{
+// 			titleTextBox.effect("shake");
+// 			return;
+// 		}
+
+// 		if(savedList.length === 0)
+// 		{
+// 			//add new list
+// 			addItemToSavedList();
+// 		}
+// 		else
+// 		{
+// 			//Update list name
+// 			savedList.find(".title-span").html(titleTextBox.val());
+// 		}
+		
+// 		//Create ul in saved list item for holding content list items
+// 		var listItems = $(".items-content").find(".active-list li"),
+// 			newSavedList = $("<ul class='saved-list-content'>").append(listItems.clone());
+
+// 		if($(".saved-list").find(".active-list").find(".saved-list-content").length ===0)
+// 		{
+// 			$(".saved-list").find(".active-list").append(newSavedList);
+// 		}
+// 		else
+// 		{
+// 			$(".saved-list").find(".active-list").find("ul").replaceWith(newSavedList);
+// 		}
+
+// 		$(".saved-list").find(".active-list").find("ul").hide();
+// 	}
+// }
 
 function selectList(){
 	var savedListContent = $(this).find(".saved-list-content"),
