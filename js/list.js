@@ -21,27 +21,32 @@ function initialize(){
 function loadItemsForSavedLists(){
 	var savedList = $(".saved-list");
 	for (var i = 0; i <= localStorage.length -1; i++) {
-		var savedListItem = $("<li>"),
-			listName = localStorage.key(i);
-
-		savedListItem.append(listName);
+		var	listName = localStorage.key(i),
+			savedListItem = createSavedListItem(listName);
+		
 		savedList.append(savedListItem);
+
 		if(i === 0){
-			loadItemsForContentList(JSON.parse(localStorage.getItem(listName)));
-			savedList.find("li").eq(i).addClass("active-list");
+			loadItemsForContentList(getListItems(listName));
+			savedList.find("li").eq(i).addClass("hightlight");
 			$("#title-textbox").val(listName);
 		}
 	};
 }
 
 function loadItemsForContentList(listItems){
-	var activeList = $(".items-content").find(".active-list");
+	var activeList = $(".items-content").find(".active-list").empty();
+	
 	for (var i = 0; i <= listItems.length - 1; i++) {
 		var listItem = $("<li>"),
 			itemName = listItems[i];
 		listItem.append(itemName);
 		activeList.append(listItem);
 	};
+}
+
+function getListItems(listName){
+	return JSON.parse(localStorage.getItem(listName));
 }
 
 function toggleCheckedItem(){
@@ -71,6 +76,24 @@ function toggleSideBarHandleIcon(){
 		sideBarHandleIcon.toggleClass("fa-angle-right");
 }
 
+function toggleActiveList(){
+	var title = $(this).find(".title-span").text(),
+		items = JSON.parse(localStorage.getItem(title));
+
+	loadItemsForContentList(items);
+
+	// var savedListContent = $(this).find(".saved-list-content"),
+	// 	listTitle = $(this).find(".title-span").text(),
+	// 	itemsList = $(".items-content").find(".active-list");
+
+	// //$(".saved-list").children().removeClass("active-list");
+	// // savedListContent.parent().addClass("active-list");
+	// itemsList.empty().append(savedListContent.find("li").clone());
+	// $("#title-textbox").val(listTitle);
+	// itemsList.find("li").click(toggleCheckedItem);
+	// itemsList.find("li .fa-times").first().click(removeItem);
+}
+
 function addItemToContentList(){
 	//If enter pressed
 	if (event.which == 13 && $("#item-textbox").val() !== ""){
@@ -84,12 +107,30 @@ function addItemToContentList(){
 
 function addItemToSavedList(){
 	var savedList 	= $(".saved-list"),
-		newListItem = $(createSavedListItem()).addClass("active-list");
+		newListItem = $(createSavedListItem());//.addClass("active-list");
 
-		savedList.children().removeClass("active-list");
+		// savedList.children().removeClass("active-list");
 		savedList.append(newListItem);
 		newListItem.hide().show("slow");
-		savedList.find("li").click(selectList);
+		savedList.find("li").click(toggleActiveList);
+}
+
+function deleteList(){
+	event.stopPropagation();//Prevent events from bubbling up on li.
+	var icon = $(this),
+		item = icon.parent(),
+		listName = item.find(".title-span").text(),
+		closestItem = item.closest("li");
+
+	item.slideUp("slow", function(){ $(this).remove(); });
+	//localStorage.removeItem(listName);
+	//find closest li and make active
+	if(closestItem.length === 0){
+		addNewList();
+	}
+	else{
+		loadItemsForContentList(getListItems(closestItem.find(".title-span").text()));
+	}
 }
 
 function removeItem(){
@@ -110,7 +151,7 @@ function addNewList(){
 	titleTextBox.val("");
 	titleTextBox.focus();
 	$(".items-content").find(".active-list").empty();
-	$(".saved-list").find("li").removeClass("active-list");
+	// $(".saved-list").find("li").removeClass("active-list");
 }
 
 function setOldValue(){
@@ -170,18 +211,7 @@ function saveList(){
 // 	}
 // }
 
-function selectList(){
-	var savedListContent = $(this).find(".saved-list-content"),
-		listTitle = $(this).find(".title-span").text(),
-		itemsList = $(".items-content").find(".active-list");
 
-	$(".saved-list").children().removeClass("active-list");
-	savedListContent.parent().addClass("active-list");
-	itemsList.empty().append(savedListContent.find("li").clone());
-	$("#title-textbox").val(listTitle);
-	itemsList.find("li").click(toggleCheckedItem);
-	itemsList.find("li .fa-times").first().click(removeItem);
-}
 
 function createContentItem(){
 	var newListItem = $("<li>" + createCheckIcon() + $("#item-textbox").val() + createDeleteIcon() +"</li>");
@@ -190,14 +220,14 @@ function createContentItem(){
 		return newListItem;
 }
 
-function createSavedListItem(){
-	var newListItem = $("<li>" + createTitleSpan() + createDeleteIcon() +"</li>");
-		newListItem.find(".fa-times").click(removeItem);
+function createSavedListItem(listName){
+	var newListItem = $("<li>" + createTitleSpan(listName) + createDeleteIcon() +"</li>").click(toggleActiveList);
+		newListItem.find(".fa-times").click(deleteList);
 		return newListItem;
 }
 
-function createTitleSpan(){
-	return "<span class='title-span'>" + $("#title-textbox").val() + "</span>";
+function createTitleSpan(listName){
+	return "<span class='title-span'>" + listName + "</span>";
 }
 
 function createDeleteIcon(){

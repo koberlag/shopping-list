@@ -91,7 +91,8 @@ h1,h2{
 }
 
 .saved-list li:nth-child(odd),
-.inner-list-container li:nth-child(odd){
+.inner-list-container li:nth-child(odd),
+.highlight{
 	background-color: #827f71;
 	color:#f2f0e5;
 }
